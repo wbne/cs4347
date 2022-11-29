@@ -5,6 +5,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import PersonInfo from './info';
 
 const images = [
   {
@@ -23,8 +24,8 @@ const images = [
     width: '31%',
   },
   {
-    url: '/coffeeguy.jpg',
-    title: 'Mario',
+    url: 'https://i0.wp.com/cs.utdallas.edu/wp-content/uploads/2009/04/Kamran-Khan-June-2017.jpg?fit=750%2C750',
+    title: 'Kamran Khan',
     width: '31%',
   },
   {
@@ -140,36 +141,52 @@ const ImageMarked = styled('span')(({ theme }) => ({
 
 export default function Cards() {
   const router = useRouter();
+  const[name, setName] = React.useState("");
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300 }}>
       {images.map((image) => (
-        <ImageButton
-        focusRipple
-        key={image.title}
-        style={{
-            width: image.width,
-            margin: 10,
-        }}
-        >
-        <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
-        <ImageBackdrop className="MuiImageBackdrop-root" />
-        <Image>
-            <Typography
-            component="span"
-            variant="subtitle1"
-            color="inherit"
-            sx={{
-                position: 'relative',
-                p: 4,
-                pt: 2,
-                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-            }}
-            >
-            {image.title}
-            <ImageMarked className="MuiImageMarked-root" />
-            </Typography>
-        </Image>
-        </ImageButton>
+        <>
+          <ImageButton
+          focusRipple
+          key={image.title}
+          style={{
+              width: image.width,
+              margin: 10,
+          }}
+          onClick={() => {
+            setName(image.title);
+            setOpen(true);
+          }}
+          >
+          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+          <ImageBackdrop className="MuiImageBackdrop-root" />
+          <Image>
+              <Typography
+              component="span"
+              variant="subtitle1"
+              color="inherit"
+              sx={{
+                  position: 'relative',
+                  p: 4,
+                  pt: 2,
+                  pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+              }}
+              >
+              {image.title}
+              <ImageMarked className="MuiImageMarked-root" />
+              </Typography>
+          </Image>
+          </ImageButton>
+          {open && (<PersonInfo handleClose = {handleClose} view = {open} name={name}></PersonInfo>)}
+        </>
       ))}
     </Box>
   );

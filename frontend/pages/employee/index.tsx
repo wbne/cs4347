@@ -3,11 +3,10 @@ import { Grid, Divider, Box,FormControl, OutlinedInput, InputLabel, InputAdornme
 import { Search } from "@mui/icons-material";
 import { useState } from "react";
 import Cards from "./cards";
-import useWindowDimensions from "./windowValue";
+import useDeviceSize from "./windowValue";
 
 export default function Employee() {     
-    const { height, width } = useWindowDimensions();
-
+    const [width, height] = useDeviceSize();
     return (
         <>
             <NavBar/>
