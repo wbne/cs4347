@@ -21,7 +21,7 @@ export default function NavBar() {
         <AppBar position='fixed' sx={{backgroundColor: "white", color: "#212121",}}>
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Caleb's Cooming Calves
+                    Khan's Calves
                 </Typography>
                 {auth && (
                 <div>
