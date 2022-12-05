@@ -55,10 +55,7 @@ export default function PersonInfo<PROPS extends Props, >({ name, view, handleCl
                 <Typography> Department ID: </Typography>
                 <Typography> Site ID: </Typography>
                 <Typography> Phone Number: </Typography>
-                <Typography> Email Address: </Typography>
-                <Typography> Pay date: </Typography>
-                <Typography> Transaction Number: </Typography>
-                <Typography> Amount: </Typography>
+                <Typography> Email Address: </Typography>                
               </DialogContentText>
             </DialogContent>
             <DialogActions>

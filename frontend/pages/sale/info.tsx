@@ -46,19 +46,15 @@ export default function PersonInfo<PROPS extends Props, >({ name, view, handleCl
             aria-describedby="alert-dialog-slide-description"
             key={name}
         >
-          <DialogTitle>Name: {name}</DialogTitle>            
+          <DialogTitle>Salesman name: {name}</DialogTitle>            
             <DialogContent>
               <DialogContentText id="alert-dialog-slide-description">
-                <Typography> Title: </Typography>
-                <Typography> Employee Rank: </Typography>
-                <Typography> Employee ID: </Typography>
-                <Typography> Department ID: </Typography>
+                <Typography> Salesman ID: </Typography>
+                <Typography> Customer ID: </Typography>
+                <Typography> Product ID: </Typography>
+                <Typography> Sale ID: </Typography>
                 <Typography> Site ID: </Typography>
-                <Typography> Phone Number: </Typography>
-                <Typography> Email Address: </Typography>
-                <Typography> Pay date: </Typography>
-                <Typography> Transaction Number: </Typography>
-                <Typography> Amount: </Typography>
+                <Typography> Sale Time: </Typography>            
               </DialogContentText>
             </DialogContent>
             <DialogActions>
