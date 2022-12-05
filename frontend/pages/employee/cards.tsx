@@ -9,17 +9,17 @@ import PersonInfo from './info';
 
 const images = [
   {
-    url: '/coffeeguy.jpg',
+    url: '/loki.jpg',
     title: 'Lokesh Yerneni',
     width: '31%',
   },
   {
-    url: '/coffeeguy.jpg',
+    url: '/benjamin.png',
     title: 'Benjamin Wang',
     width: '31%',
   },
   {
-    url: '/coffeeguy.jpg',
+    url: '/caleb.jpg',
     title: 'Caleeb Lim',
     width: '31%',
   },
@@ -29,23 +29,23 @@ const images = [
     width: '31%',
   },
   {
-    url: '/coffeeguy.jpg',
-    title: 'Luigi',
+    url: '/jack.jpg',
+    title: 'Jack',
     width: '31%',
   },
   {
-    url: '/coffeeguy.jpg',
-    title: 'Person A',
+    url: '/luke.jpg',
+    title: 'Luke',
     width: '31%',
   },
   {
-    url: '/coffeeguy.jpg',
-    title: 'Person B',
+    url: '/rees.jpg',
+    title: 'Rees',
     width: '31%',
   },
   {
-    url: '/coffeeguy.jpg',
-    title: 'Person C',
+    url: '/kanishk.jpg',
+    title: 'Kanishk',
     width: '31%',
   },
   {
@@ -91,7 +91,8 @@ const ImageButton = styled(ButtonBase)(({ theme }) => ({
       opacity: 0,
     },
     '& .MuiTypography-root': {
-      border: '4px solid currentColor',
+      borderBottom: '3px solid currentColor',
+      bottom: 2,
     },
   },
 }));
@@ -111,9 +112,9 @@ const Image = styled('span')(({ theme }) => ({
   left: 0,
   right: 0,
   top: 0,
-  bottom: 0,
+  bottom: 2,
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'end',
   justifyContent: 'center',
   color: theme.palette.common.white,
 }));
@@ -134,7 +135,7 @@ const ImageMarked = styled('span')(({ theme }) => ({
   width: 18,
   backgroundColor: theme.palette.common.white,
   position: 'absolute',
-  bottom: -2,
+  bottom: 2,
   left: 'calc(50% - 9px)',
   transition: theme.transitions.create('opacity'),
 }));
@@ -177,11 +178,11 @@ export default function Cards() {
                   position: 'relative',
                   p: 4,
                   pt: 2,
-                  pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  pb: (theme) => `calc(${theme.spacing(1)} + 2px)`,
               }}
               >
               {image.title}
-              <ImageMarked className="MuiImageMarked-root" />
+              {/* <ImageMarked className="MuiImageMarked-root" /> */}
               </Typography>
           </Image>
           </ImageButton>
