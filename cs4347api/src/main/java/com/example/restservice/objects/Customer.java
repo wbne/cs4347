@@ -1,5 +1,5 @@
 package com.example.restservice.objects;
 
-public class Customer extends Person{
+public class Customer extends Person_Info{
     
 }

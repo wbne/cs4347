@@ -1,6 +1,6 @@
 package com.example.restservice.objects;
 
-public class Vendor extends Person {
+public class Vendor extends Person_Info {
     private int vendorID, accountNumber, creditRating;
     private String url, name;
 
