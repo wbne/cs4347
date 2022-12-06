@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.restservice.objects.Employee_Info;
+import com.example.restservice.objects.Employee_PayInfo;
+import com.example.restservice.objects.PayInfoRepository;
 import com.example.restservice.objects.PersonRepository;
 import com.example.restservice.objects.Person_Info;
 import com.example.restservice.objects.EmployeeRepository;
@@ -31,6 +33,9 @@ public class DatabaseController {
 
     @Autowired
     PersonRepository personRepository;
+
+    @Autowired
+    PayInfoRepository payInfoRepository;
     
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
@@ -70,6 +75,11 @@ public class DatabaseController {
         String fname = splitName[0];
         String lname = splitName[1];
         return personRepository.findByFnameAndLname(fname, lname);
+    }
+
+    @GetMapping("/payinfo")
+    public List<Employee_PayInfo> getPayments() {
+        return payInfoRepository.findAll();
     }
     
 }
