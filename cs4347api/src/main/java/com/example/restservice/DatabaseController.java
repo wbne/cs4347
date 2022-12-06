@@ -60,5 +60,13 @@ public class DatabaseController {
     public List<Person_Info> getAllPeople() {
         return personRepository.findAll();
     }
+
+    @GetMapping("/citizensofearth/{name}")
+    public List<Person_Info> getPerson(@PathVariable String name) {
+        String[] splitName = name.split("&");
+        String fname = splitName[0];
+        String lname = splitName[1];
+        return personRepository.findByFnameAndLname(fname, lname);
+    }
     
 }
