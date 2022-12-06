@@ -1,13 +1,14 @@
 import NavBar from "../home/navbar";
 import { Grid, Divider, Box,FormControl, OutlinedInput, InputLabel, InputAdornment, IconButton } from "@mui/material";
 import { Search } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cards from "./cards";
 import useDeviceSize from "./windowValue";
 
 export default function Employee() {     
     const [width, height] = useDeviceSize();
     const [searchVal, setSearchVal] = useState("");
+
     return (
         <>
             <NavBar/>

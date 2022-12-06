@@ -147,8 +147,92 @@ type Props = {
 export default function Cards<PROPS extends Props, >({ input }: PROPS) {
   const router = useRouter();
   const[name, setName] = React.useState("");
-
   const [open, setOpen] = React.useState(false);
+
+  const [empData, setEmpData] = React.useState([{
+    employee_ID: Number,
+    employee_rank: String,
+    department_ID: String,
+    site_ID: String,
+    supervisor_ID: String,
+  }]);
+
+  const [allData, setAllData] = React.useState([{
+    personalID: Number,
+    age: Number,
+    phoneNumber: String,
+    emailAddress: String,
+    name: String,
+  }]);
+
+  const [allEmpData, setAllEmpData] = React.useState([{
+    employee_ID: Number,
+    employee_rank: String,
+    department_ID: String,
+    site_ID: String,
+    supervisor_ID: String,
+    age: Number,
+    phoneNumber: String,
+    emailAddress: String,
+    name: String,
+  }])
+
+  const fetchEmp = async () => {
+    const response = await fetch("http://localhost:6817/get/employees");
+    const data = await response.json();
+    for (let x = 0; x < data.length; x++) {
+      setEmpData((empData) => [...empData, {
+        employee_ID: data[x].employee_ID,
+        employee_rank: data[x].employee_rank,
+        department_ID: data[x].department_ID,
+        site_ID: data[x].site_ID,
+        supervisor_ID: data[x].supervisor_ID,
+      }]);
+    }
+
+    return empData;
+  }
+
+  const fetchAll = async () => {
+    const response = await fetch("http://localhost:6817/get/citizensofearth");
+    const data = await response.json();
+    for (let x = 0; x < data.length; x++) {
+      setAllData((allData) => [...allData, {
+        personalID: data[x].personalID,
+        age: data[x].age,
+        emailAddress: data[x].emailAddress,
+        phoneNumber: data[x].phoneNumber,
+        name: data[x].name,
+      }]);
+    }
+
+    return allData;
+  }
+
+  React.useEffect(() => {
+    fetchAll();
+    fetchEmp();
+
+    allData.map((val) => (
+      empData.map((id) => {
+        if (val.personalID === id.employee_ID) {
+          setAllEmpData((allData) => [...allData, {
+            employee_ID: val.personalID,
+            employee_rank: id.employee_rank,
+            department_ID: id.department_ID,
+            site_ID: id.site_ID,
+            supervisor_ID: id.supervisor_ID,
+            age: val.age,
+            phoneNumber: val.phoneNumber,
+            emailAddress: val.emailAddress,
+            name: val.name,
+          }])
+        }
+      })
+    ))
+
+    console.log(allEmpData);
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
@@ -157,7 +241,7 @@ export default function Cards<PROPS extends Props, >({ input }: PROPS) {
   
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300 }}>
-      {images.filter((image) => (image.title.includes(input))).map((image) => (
+      {/* {images.filter((image) => (image.title.includes(input))).map((image) => (
         <>
           <ImageButton
           focusRipple
@@ -186,13 +270,12 @@ export default function Cards<PROPS extends Props, >({ input }: PROPS) {
               }}
               >
               {image.title}
-              {/* <ImageMarked className="MuiImageMarked-root" /> */}
               </Typography>
           </Image>
           </ImageButton>
           {open && (<PersonInfo handleClose = {handleClose} view = {open} name={name}></PersonInfo>)}
         </>
-      ))}
+      ))} */}
     </Box>
   );
 }
