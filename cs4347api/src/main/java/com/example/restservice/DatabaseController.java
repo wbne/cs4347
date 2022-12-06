@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +23,13 @@ import com.example.restservice.objects.Employee_PayInfo;
 import com.example.restservice.objects.PayInfoRepository;
 import com.example.restservice.objects.PersonRepository;
 import com.example.restservice.objects.Person_Info;
+import com.example.restservice.objects.Department;
+import com.example.restservice.objects.DepartmentRepository;
 import com.example.restservice.objects.EmployeeRepository;
 
 @RestController
+@EntityScan
+@ComponentScan
 @RequestMapping("/get")
 @CrossOrigin(origins = "http://localhost:3000")
 public class DatabaseController {
@@ -36,6 +44,9 @@ public class DatabaseController {
 
     @Autowired
     PayInfoRepository payInfoRepository;
+
+    @Autowired
+    DepartmentRepository departmentRepository;
     
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
@@ -80,6 +91,11 @@ public class DatabaseController {
     @GetMapping("/payinfo")
     public List<Employee_PayInfo> getPayments() {
         return payInfoRepository.findAll();
+    }
+    
+    @GetMapping("/departments")
+    public List<Department> getDepartments() {
+        return departmentRepository.findAll();
     }
     
 }
