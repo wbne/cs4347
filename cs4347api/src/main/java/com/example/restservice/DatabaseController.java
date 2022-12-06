@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +53,7 @@ public class DatabaseController {
         return weBall;
     }
 
-    @GetMapping("/employees/save")
+    @PostMapping("/employees/save")
     public void findEmployee(@RequestParam String data) {
         String[] splitData = data.split("&");
         employeeRepository.save(new Employee_Info(Integer.parseInt(splitData[0]), splitData[1], splitData[2], splitData[3], splitData[4]));
