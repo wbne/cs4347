@@ -5,7 +5,7 @@ import { useState } from "react";
 import Cards from "./cards";
 import useDeviceSize from "./windowValue";
 
-export default function Employee() {     
+export default function Customer() {     
     const [width, height] = useDeviceSize();
     const [searchVal, setSearchVal] = useState("");
     return (
