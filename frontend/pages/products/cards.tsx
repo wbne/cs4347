@@ -144,55 +144,107 @@ type Props = {
   input: string,
 }
 
+type prodProps = {
+  productID: number,
+  name: string,
+  style: string,
+  productType: string,
+  price: number,
+  size: number,
+  weight: number,
+  deptID: string,
+}
+
 export default function Cards<PROPS extends Props, >({ input }: PROPS) {
   const router = useRouter();
-  const[name, setName] = React.useState("");
-
+  const [allData, setAllData] = React.useState<prodProps[]>([]);
   const [open, setOpen] = React.useState(false);
+  const [selectedVal, setSelectedVal] = React.useState<prodProps>();
 
   const handleClose = () => {
     setOpen(false);
   };
-
   
+  const fetchAll = async () => {
+    const response = await fetch("http://localhost:6817/get/products");
+    const data = await response.json().then((result) => {
+      setAllData(result);
+      return result;
+    });
+
+    return data;
+  };
+
+  React.useEffect(() => {
+    const hi = async () => {
+      await fetchAll();
+    };
+    hi();
+  }, []);
+
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300 }}>
-      {images.filter((image) => (image.title.includes(input))).map((image) => (
-        <>
-          <ImageButton
-          focusRipple
-          key={image.title}
-          style={{
-              width: image.width,
-              margin: 10,
-          }}
-          onClick={() => {
-            setName(image.title);
-            setOpen(true);
-          }}
-          >
-          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-              <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                  position: 'relative',
-                  p: 4,
-                  pt: 2,
-                  pb: (theme) => `calc(${theme.spacing(1)} + 2px)`,
+      {
+        allData.filter((val) => (val.name.trim().toLowerCase().includes(input)))
+        .map((val) => (
+          <>
+            <ImageButton
+              focusRipple
+              key={val.productID}
+              style={{
+                width: "31%",
+                margin: 10,
               }}
-              >
-              {image.title}
-              {/* <ImageMarked className="MuiImageMarked-root" /> */}
-              </Typography>
-          </Image>
-          </ImageButton>
-          {open && (<PersonInfo handleClose = {handleClose} view = {open} name={name}></PersonInfo>)}
-        </>
-      ))}
+              onClick={() => {
+                setSelectedVal({
+                  productID: val.productID,
+                  name: val.name,
+                  style: val.style,
+                  productType: val.productType,
+                  price: val.price,
+                  size: val.size,
+                  weight: val.weight,
+                  deptID: val.deptID
+
+                });
+                setOpen(true);
+              }}
+            >
+              <ImageSrc style={{backgroundImage: `url("/prod.png")`}} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: "relative",
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 2px)`,
+                  }}
+                >
+                  {val.name}
+                </Typography>
+              </Image>
+            </ImageButton>
+            {open && (
+              <PersonInfo
+                handleClose={handleClose}
+                view={open}
+                productID = {selectedVal ? selectedVal.productID : 0}
+                name={selectedVal ? selectedVal.name : "Unavaliable"}
+                style={selectedVal ? selectedVal.style : "Unavaliable"}
+                productType = {selectedVal ? selectedVal.productType : "Unavailable"}
+                price = {selectedVal ? selectedVal.price : 0}
+                size = {selectedVal ? selectedVal.size : 0}
+                weight = {selectedVal ? selectedVal.weight : 0}
+                deptID = {selectedVal ? selectedVal.deptID : "Unavailable"}
+              ></PersonInfo>
+            )}
+          </>
+        ))
+      }
     </Box>
   );
 }

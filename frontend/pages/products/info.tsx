@@ -21,13 +21,20 @@ const Transition = React.forwardRef(function Transition(
 });
 
 type Props = {
+  productID: number,
   name: string,
+  style: string,
+  productType: string,
+  price: number,
+  size: number,
+  weight: number,
+  deptID: string,
   view: boolean,
   handleClose: () => void;
 }
 
 
-export default function PersonInfo<PROPS extends Props, >({ name, view, handleClose }: PROPS) {
+export default function PersonInfo<PROPS extends Props, >({ productID, name, style, productType, price, size, weight, deptID, view, handleClose }: PROPS) {
   const [open, setOpen] = useState(view);
 
   const handleClickOpen = () => {
@@ -49,13 +56,13 @@ export default function PersonInfo<PROPS extends Props, >({ name, view, handleCl
           <DialogTitle>Product Name: {name}</DialogTitle>            
             <DialogContent>
               <DialogContentText id="alert-dialog-slide-description">
-                <Typography> List Price: </Typography>
-                <Typography> Size: </Typography>
-                <Typography> Product Type: </Typography>
-                <Typography> Style: </Typography>
-                <Typography> Product ID: </Typography>
-                <Typography> Weight: </Typography>
-                <Typography> Department ID: </Typography>                
+                <Typography> List Price: {price} </Typography>
+                <Typography> Size: {size} </Typography>
+                <Typography> Product Type: {productType}</Typography>
+                <Typography> Style: {style} </Typography>
+                <Typography> Product ID: {productID} </Typography>
+                <Typography> Weight: {weight} </Typography>
+                <Typography> Department ID: {deptID} </Typography>                
               </DialogContentText>
             </DialogContent>
             <DialogActions>
