@@ -23,11 +23,14 @@ const Transition = React.forwardRef(function Transition(
 type Props = {
   name: string,
   view: boolean,
+  manager: string,
+  managerID: number,
+  depID: number,
   handleClose: () => void;
 }
 
 
-export default function PersonInfo<PROPS extends Props, >({ name, view, handleClose }: PROPS) {
+export default function PersonInfo<PROPS extends Props, >({ name, view, manager, managerID, depID, handleClose }: PROPS) {
   const [open, setOpen] = useState(view);
 
   const handleClickOpen = () => {
@@ -46,16 +49,12 @@ export default function PersonInfo<PROPS extends Props, >({ name, view, handleCl
             aria-describedby="alert-dialog-slide-description"
             key={name}
         >
-          <DialogTitle>Name: {name}</DialogTitle>            
+          <DialogTitle>The {name} Department</DialogTitle>            
             <DialogContent>
               <DialogContentText id="alert-dialog-slide-description">
-                <Typography> Title: </Typography>
-                <Typography> Employee Rank: </Typography>
-                <Typography> Employee ID: </Typography>
-                <Typography> Department ID: </Typography>
-                <Typography> Site ID: </Typography>
-                <Typography> Phone Number: </Typography>
-                <Typography> Email Address: </Typography>                
+                <Typography> Manager: {manager} </Typography>
+                <Typography> Manager ID: {managerID} </Typography>
+                <Typography> Department ID: {depID} </Typography>
               </DialogContentText>
             </DialogContent>
             <DialogActions>

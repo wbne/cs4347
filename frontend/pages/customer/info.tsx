@@ -22,12 +22,19 @@ const Transition = React.forwardRef(function Transition(
 
 type Props = {
   name: string,
+  personalID: number,
+  age: number,
+  phoneNumber: string,
+  emailAddress: string,
+  transaction: number,
+  amount: number,
+  payDate: string,
   view: boolean,
   handleClose: () => void;
 }
 
 
-export default function PersonInfo<PROPS extends Props, >({ name, view, handleClose }: PROPS) {
+export default function PersonInfo<PROPS extends Props, >({personalID, phoneNumber, emailAddress, name, transaction, amount, payDate, view, handleClose }: PROPS) {
   const [open, setOpen] = useState(view);
 
   const handleClickOpen = () => {
@@ -46,11 +53,15 @@ export default function PersonInfo<PROPS extends Props, >({ name, view, handleCl
             aria-describedby="alert-dialog-slide-description"
             key={name}
         >
-          <DialogTitle>Department Name: {name}</DialogTitle>            
+          <DialogTitle>Name: {name}</DialogTitle>            
             <DialogContent>
               <DialogContentText id="alert-dialog-slide-description">
-                <Typography> Department ID: </Typography>
-                <Typography> Department Manager SSN: </Typography>           
+                <Typography> Employee ID: {personalID} </Typography>
+                <Typography> Phone Number: {phoneNumber} </Typography>
+                <Typography> Email Address: {emailAddress} </Typography>
+                <Typography> Transaction: 0 </Typography>
+                <Typography> Amount: 0 </Typography>
+                <Typography> Pay Date: Unavailable </Typography>
               </DialogContentText>
             </DialogContent>
             <DialogActions>

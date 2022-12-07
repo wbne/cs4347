@@ -144,55 +144,122 @@ type Props = {
   input: string,
 }
 
+type AllDataType = 
+  {
+    personalID: number,
+    age: number,
+    phoneNumber: string,
+    emailAddress: string,
+    name: string,
+    transactionNumber: number,
+    amount: number,
+    payDate: string
+  };
+
 export default function Cards<PROPS extends Props, >({ input }: PROPS) {
   const router = useRouter();
-  const[name, setName] = React.useState("");
-
   const [open, setOpen] = React.useState(false);
+
+  const [allData, setAllData] = React.useState<AllDataType[]>([]);
+  const [selectedVal, setSelectedVal] = React.useState<AllDataType>();
+
+  const fetchAll = async () => {
+    let temp: any[] = [];
+    const response = await fetch("http://localhost:6817/get/citizensofearth");
+    const data = await response.json().then((result) => {
+      setAllData(result);
+      return result;
+    });
+
+    return data;
+  };
+
+  React.useEffect(() => {
+    const hi = async () => {
+      await fetchAll();
+    };
+    hi();
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  
+  function findBackground(name: string) {
+    images.map((image) => {
+      if (image.title == name) {
+        console.log(image.url);
+        return image.url;
+      }
+    });
+
+    return "/coffeeguy.jpg";
+  }
+
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300 }}>
-      {images.filter((image) => (image.title.includes(input))).map((image) => (
-        <>
-          <ImageButton
-          focusRipple
-          key={image.title}
-          style={{
-              width: image.width,
-              margin: 10,
-          }}
-          onClick={() => {
-            setName(image.title);
-            setOpen(true);
-          }}
-          >
-          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-              <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                  position: 'relative',
-                  p: 4,
-                  pt: 2,
-                  pb: (theme) => `calc(${theme.spacing(1)} + 2px)`,
-              }}
+    (
+      <Box sx={{ display: "flex", flexWrap: "wrap", minWidth: 300 }}>
+        {
+        allData.filter((val) => (val.personalID > 30000)).filter((val) => (val.name.trim().toLowerCase().includes(input)))
+          .map((val) => (
+            <>
+              <ImageButton
+                focusRipple
+                key={val.personalID}
+                style={{
+                  width: "31%",
+                  margin: 10,
+                }}
+                onClick={() => {
+                  setSelectedVal({
+                    age: val.age,
+                    phoneNumber: val.phoneNumber,
+                    emailAddress: val.emailAddress,
+                    name: val.name,
+                    personalID: val.personalID,
+                    transactionNumber: val.transactionNumber,
+                    amount: val.amount,
+                    payDate: val.payDate
+                  });
+                  setOpen(true);
+                }}
               >
-              {image.title}
-              {/* <ImageMarked className="MuiImageMarked-root" /> */}
-              </Typography>
-          </Image>
-          </ImageButton>
-          {open && (<PersonInfo handleClose = {handleClose} view = {open} name={name}></PersonInfo>)}
-        </>
-      ))}
-    </Box>
+                <ImageSrc style={{backgroundImage: `url(${findBackground(val.name)})`}} />
+                <ImageBackdrop className="MuiImageBackdrop-root" />
+                <Image>
+                  <Typography
+                    component="span"
+                    variant="subtitle1"
+                    color="inherit"
+                    sx={{
+                      position: "relative",
+                      p: 4,
+                      pt: 2,
+                      pb: (theme) => `calc(${theme.spacing(1)} + 2px)`,
+                    }}
+                  >
+                    {val.name}
+                  </Typography>
+                </Image>
+              </ImageButton>
+              {open && (
+                <PersonInfo
+                  handleClose={handleClose}
+                  view={open}
+                  personalID = {selectedVal ? selectedVal.personalID : 0}
+                  name={selectedVal ? selectedVal.name : "Unavaliable"}
+                  phoneNumber={selectedVal ? selectedVal.phoneNumber : "Unavaliable"}
+                  age = {selectedVal ? selectedVal.age : 0}
+                  emailAddress = {selectedVal ? selectedVal.emailAddress : "Unavaliable"}
+                  transaction = {selectedVal ? selectedVal.transactionNumber : 0}
+                  amount = {selectedVal ? selectedVal.amount : 0}
+                  payDate = {selectedVal ? selectedVal.payDate : "Unavailable"}
+                ></PersonInfo>
+              )}
+            </>
+          ))
+        }
+      </Box>
+    )
   );
 }

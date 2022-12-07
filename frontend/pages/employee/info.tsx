@@ -22,12 +22,23 @@ const Transition = React.forwardRef(function Transition(
 
 type Props = {
   name: string,
+  employee_ID: number,
+  employee_Rank: string,
+  department_ID: string,
+  site_ID: string,
+  supervisor_ID: string,
+  age: number,
+  phoneNumber: string,
+  emailAddress: string,
+  transaction: number,
+  amount: number,
+  payDate: string,
   view: boolean,
   handleClose: () => void;
 }
 
 
-export default function PersonInfo<PROPS extends Props, >({ name, view, handleClose }: PROPS) {
+export default function PersonInfo<PROPS extends Props, >({ employee_ID, employee_Rank, department_ID, site_ID, phoneNumber, emailAddress, name, transaction, amount, payDate, view, handleClose }: PROPS) {
   const [open, setOpen] = useState(view);
 
   const handleClickOpen = () => {
@@ -49,16 +60,15 @@ export default function PersonInfo<PROPS extends Props, >({ name, view, handleCl
           <DialogTitle>Name: {name}</DialogTitle>            
             <DialogContent>
               <DialogContentText id="alert-dialog-slide-description">
-                <Typography> Title: </Typography>
-                <Typography> Employee Rank: </Typography>
-                <Typography> Employee ID: </Typography>
-                <Typography> Department ID: </Typography>
-                <Typography> Site ID: </Typography>
-                <Typography> Phone Number: </Typography>
-                <Typography> Email Address: </Typography>
-                <Typography> Pay date: </Typography>
-                <Typography> Transaction Number: </Typography>
-                <Typography> Amount: </Typography>
+                <Typography> Employee Rank: {employee_Rank} </Typography>
+                <Typography> Employee ID: {employee_ID} </Typography>
+                <Typography> Department ID: {department_ID} </Typography>
+                <Typography> Site ID: {site_ID} </Typography>
+                <Typography> Phone Number: {phoneNumber} </Typography>
+                <Typography> Email Address: {emailAddress} </Typography>
+                <Typography> Transaction: {transaction} </Typography>
+                <Typography> Amount: {amount} </Typography>
+                <Typography> Pay Date: {payDate} </Typography>
               </DialogContentText>
             </DialogContent>
             <DialogActions>

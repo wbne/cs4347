@@ -143,56 +143,149 @@ const ImageMarked = styled('span')(({ theme }) => ({
 type Props = {
   input: string,
 }
+type EmpDataType = 
+  {
+    employee_ID: number,
+    employee_Rank: string,
+    department_ID: string,
+    site_ID: string,
+    supervisor_ID: string,
+  };
+
+type AllDataType = 
+  {
+    personalID: number,
+    age: number,
+    phoneNumber: string,
+    emailAddress: string,
+    name: string,
+  };
+
+type AllEmpDataType = {
+  depName: string,
+  manager: string,
+  managerID: number,
+  depID: number,
+};
+
+type DeptType = {
+  name: string,
+  departmentID: number,
+  mgr: number,
+}
 
 export default function Cards<PROPS extends Props, >({ input }: PROPS) {
   const router = useRouter();
   const[name, setName] = React.useState("");
-
   const [open, setOpen] = React.useState(false);
+  const [allData, setAllData] = React.useState<AllDataType[]>([]);
+  const [allEmpData, setAllEmpData] = React.useState<AllEmpDataType[]>([]);
+  const [selectedVal, setSelectedVal] = React.useState<AllEmpDataType>();
+  const [depData, setDepData] = React.useState<DeptType[]>([]);
 
   const handleClose = () => {
     setOpen(false);
   };
 
+  const fetchAll = async () => {
+    const response = await fetch("http://localhost:6817/get/citizensofearth");
+    const data = await response.json().then((result) => {
+      setAllData(result);
+      return result;
+    });
+
+    return data;
+  };
+
+  const fetchDep = async () => {
+    const response = await fetch("http://localhost:6817/get/departments");
+    const data = await response.json().then((result) => {
+      setDepData(result);
+      return result;
+    });
+
+    return data;
+  }
+
+  React.useEffect(() => {
+    const hi = async () => {
+      const newAllData:AllDataType[] = await fetchAll();
+      const newDepData: DeptType[] = await fetchDep();
+
+      let temp: any[] = [];
+
+      newAllData.map((elem) => {
+          newDepData.map((elem3) => {
+            if (elem3.mgr == elem.personalID) {
+              temp = [...temp, {
+                depName: elem3.name,
+                manager: elem.name,
+                managerID: elem.personalID,
+                depID: elem3.departmentID,
+              }]
+            }
+          }
+        )});
+      setAllEmpData(temp)
+    };
+    hi();
+  }, []);
+
   
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300 }}>
-      {images.filter((image) => (image.title.includes(input))).map((image) => (
-        <>
-          <ImageButton
-          focusRipple
-          key={image.title}
-          style={{
-              width: image.width,
-              margin: 10,
-          }}
-          onClick={() => {
-            setName(image.title);
-            setOpen(true);
-          }}
-          >
-          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-              <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                  position: 'relative',
-                  p: 4,
-                  pt: 2,
-                  pb: (theme) => `calc(${theme.spacing(1)} + 2px)`,
+      {
+        allEmpData.filter((val) => (val.depName.trim().toLowerCase().includes(input)))
+        .map((val, idx) => (
+          <>
+            <ImageButton
+              focusRipple
+              key={val.depID}
+              style={{
+                width: "31%",
+                margin: 10,
               }}
-              >
-              {image.title}
-              {/* <ImageMarked className="MuiImageMarked-root" /> */}
-              </Typography>
-          </Image>
-          </ImageButton>
-          {open && (<PersonInfo handleClose = {handleClose} view = {open} name={name}></PersonInfo>)}
-        </>
-      ))}
+              onClick={() => {
+                setSelectedVal({
+                  depID: val.depID,
+                  depName: val.depName,
+                  manager: val.manager,
+                  managerID: val.managerID,
+                });
+                setOpen(true);
+              }}
+            >
+              <ImageSrc style={{backgroundImage: "url('/department.jpg')"}} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: "relative",
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 2px)`,
+                  }}
+                >
+                  {val.depName}
+                </Typography>
+              </Image>
+            </ImageButton>
+            {open && (
+              <PersonInfo
+                handleClose={handleClose}
+                view={open}
+                name={selectedVal ? selectedVal.depName : "Unavaliable"}
+                depID={selectedVal ? selectedVal.depID : 0}
+                managerID={selectedVal ? selectedVal.managerID : 0}
+                manager={selectedVal ? selectedVal.manager : "Unavaliable"}
+                ></PersonInfo>
+            )}
+          </>
+        ))
+      }
     </Box>
   );
 }
