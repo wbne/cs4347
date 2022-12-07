@@ -23,6 +23,8 @@ import com.example.restservice.objects.Employee_PayInfo;
 import com.example.restservice.objects.PayInfoRepository;
 import com.example.restservice.objects.PersonRepository;
 import com.example.restservice.objects.Person_Info;
+import com.example.restservice.objects.Product;
+import com.example.restservice.objects.ProductRepository;
 import com.example.restservice.objects.Department;
 import com.example.restservice.objects.DepartmentRepository;
 import com.example.restservice.objects.EmployeeRepository;
@@ -47,6 +49,9 @@ public class DatabaseController {
 
     @Autowired
     DepartmentRepository departmentRepository;
+
+    @Autowired
+    ProductRepository productRepository;
     
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
@@ -96,6 +101,11 @@ public class DatabaseController {
     @GetMapping("/departments")
     public List<Department> getDepartments() {
         return departmentRepository.findAll();
+    }
+
+    @GetMapping("/products")
+    public List<Product> getProducts() {
+        return productRepository.findAll();
     }
     
 }
